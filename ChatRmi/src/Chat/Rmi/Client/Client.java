@@ -1,5 +1,6 @@
 package Chat.Rmi.Client;
 
-public class Client {
+public class Client 
+{
 
 }
