@@ -1,0 +1,28 @@
+package Chat.Rmi.Helpers;
+
+import java.util.ArrayList;
+
+import Chat.Rmi.Models.User;
+
+public class UserValidator {
+	
+	public boolean usernameIsUnique(String username, ArrayList<User> users)
+	{
+		for(User user : users)
+			if(username == user.getUsername())
+				return false;
+		return true;
+	}
+	
+	public boolean IsValidCredential(String credential)
+	{
+		
+		if(credential == null)
+			return false;
+		
+		if(credential.matches("^[a-zA-Z0-9]+$"))
+			return true;
+		
+		return false;
+	}
+}

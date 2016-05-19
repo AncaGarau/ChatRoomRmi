@@ -1,5 +1,7 @@
 package Chat.Rmi.Server;
 
-public interface IServer {
+import java.rmi.Remote;
+
+public interface IServer extends Remote{
 
 }
