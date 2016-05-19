@@ -1,18 +1,11 @@
 package Chat.Rmi.Helpers;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import Chat.Rmi.Models.User;
 
-public class UserValidator {
-	
-	public boolean usernameIsUnique(String username, ArrayList<User> users)
-	{
-		for(User user : users)
-			if(username == user.getUsername())
-				return false;
-		return true;
-	}
+public class UserValidator implements IUserValidator
+{
 	
 	public boolean IsValidCredential(String credential)
 	{
@@ -24,5 +17,14 @@ public class UserValidator {
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public boolean IsUsernameUnique(String username, List<User> users) 
+	{
+		for(User user : users)
+			if(username == user.getUsername())
+				return false;
+		return true;
 	}
 }
