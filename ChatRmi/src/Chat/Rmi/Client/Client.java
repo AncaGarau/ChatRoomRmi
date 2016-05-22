@@ -1,5 +1,6 @@
 package Chat.Rmi.Client;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
@@ -21,6 +22,12 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 		
 		server.RegisterChatClient(this);
 	}
+	
+	@Override
+	public User GetUser() throws RemoteException 
+	{
+		return this.user;
+	}
 
 	@Override
 	public void RetrieveMessage(String messageToRetrieve) throws RemoteException 
@@ -35,6 +42,8 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 		Scanner scanner = new Scanner(System.in);
 		String message;
 		
+		System.out.println("\n\nWelcome to the chat!\n\n");
+		
 		while(true)
 		{
 			message = scanner.nextLine();
@@ -44,8 +53,11 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 			}
 			catch(RemoteException ex)
 			{
+				System.out.println("Crashed in client");
 				ex.printStackTrace();
 			}
+
 		}
+		
 	}
 }

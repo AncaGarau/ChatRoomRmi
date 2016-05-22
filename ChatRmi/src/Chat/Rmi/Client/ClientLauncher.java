@@ -17,9 +17,19 @@ public class ClientLauncher
 	{
 		
 		User user = GetClientCredentials();		
-		IServer server = GetServerConnection();
 		
-		new Thread(new Client(user, server)).start();
+		try
+		{
+			IServer server = GetServer();
+
+			//TODO: Validate client credentials
+			
+			new Thread(new Client(user, server)).start();		
+		}
+		catch(Exception ex)
+		{
+			System.out.println("There was na error trying to connect to the server. Please try again later.");
+		}
 	}
 	
 	private static User GetClientCredentials() throws Exception
@@ -33,7 +43,7 @@ public class ClientLauncher
 		}
 	}
 	
-	private static IServer GetServerConnection() throws MalformedURLException, RemoteException, NotBoundException
+	private static IServer GetServer() throws MalformedURLException, RemoteException, NotBoundException
 	{
 		FileReader fileReader = new FileReader();
 		
