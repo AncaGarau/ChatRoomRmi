@@ -2,9 +2,11 @@ package Chat.Rmi.Helpers;
 
 import java.util.List;
 
+import Chat.Rmi.Models.ServerAddress;
 import Chat.Rmi.Models.User;
 
 public interface IFileReader 
 {
-	public List<User> ReadExistingCredentials(String fileName);
+	List<User> ReadExistingCredentials(String fileName);
+	ServerAddress ReadServerAddress(String fileName);
 }

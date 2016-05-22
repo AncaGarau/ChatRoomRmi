@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Chat.Rmi.Models.ServerAddress;
 import Chat.Rmi.Models.User;
 
 public class FileReader implements IFileReader
@@ -36,13 +37,15 @@ public class FileReader implements IFileReader
 		return users;
 	}
 	
-	public String ReadServerAddress(String fileName)
+	public ServerAddress ReadServerAddress(String fileName)
 	{
-		String address = null;
+		List<String> details = null;
 		try 
 		{
 			BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
-			address = br.readLine();
+			String line = br.readLine();
+			details = Arrays.asList(line.split(","));
+			
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -52,6 +55,6 @@ public class FileReader implements IFileReader
 		{
 			e.printStackTrace();
 		}
-		return address;
+		return new ServerAddress(details.get(0), Integer.parseInt(details.get(1)), details.get(2));
 	}
 }

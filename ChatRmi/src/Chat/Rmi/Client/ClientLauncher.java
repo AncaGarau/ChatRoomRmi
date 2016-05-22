@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 import Chat.Rmi.Helpers.FileReader;
+import Chat.Rmi.Models.ServerAddress;
 import Chat.Rmi.Models.User;
 import Chat.Rmi.Server.IServer;
 
@@ -36,8 +37,8 @@ public class ClientLauncher
 	{
 		FileReader fileReader = new FileReader();
 		
-		String serverAddress = fileReader.ReadServerAddress("C:\\Chat\\ServerAddress.config");
-		return (IServer)Naming.lookup(serverAddress);
+		ServerAddress serverAddress = fileReader.ReadServerAddress("C:\\Chat\\ServerAddress.config");
+		return (IServer)Naming.lookup("//" + serverAddress.GetIp() + ":" + serverAddress.GetPort() + "/" + serverAddress.GetName());
 	}
 	
 	private static int GetClientOption()
