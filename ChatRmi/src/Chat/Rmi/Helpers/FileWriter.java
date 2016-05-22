@@ -5,34 +5,45 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-public class FileWriter implements IFileWriter{
-	
+public class FileWriter implements IFileWriter
+{
 	File file = new File("Credentials.txt");
+	
 	@Override
-	public void createFileIfNotExist() {
+	public void CreateFileIfNotExist() 
+	{
 		if(!file.exists())
-			try {
+			try 
+			{
 				file.createNewFile();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 	}
 
 	@Override
-	public void writeCredentials(String username,String password) {
+	public void WriteCredentials(String username,String password) 
+	{
 		String credentials=username+","+password;
 		
-		try {
+		try 
+		{
 			java.io.FileWriter fw=new java.io.FileWriter(file,true);
 			fw.append(credentials);
 			fw.append(System.getProperty("line.separator"));
 			fw.close();
 			
 			System.out.println("Username saved");
-		} catch (FileNotFoundException e) {
+		} 
+		catch (FileNotFoundException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

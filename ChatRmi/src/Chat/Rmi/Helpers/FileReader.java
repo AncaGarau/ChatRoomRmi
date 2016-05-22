@@ -9,30 +9,32 @@ import java.util.List;
 
 import Chat.Rmi.Models.User;
 
-
-
-public class FileReader implements IFileReader{
+public class FileReader implements IFileReader
+{
 
 	@Override
-	public List<User> ReadCredentials(String fileName) {
+	public List<User> ReadCredentials(String fileName) 
+	{
 		List<User> users = new ArrayList<User>();
 		try {
-			
-			@SuppressWarnings("resource")
-			BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
-			String line = br.readLine();
-			while(line != null)
-			{
-				List<String> credentials = Arrays.asList(line.split(","));
-				users.add(new User(credentials.get(0), credentials.get(1)));
-			}
+				@SuppressWarnings("resource")
+				BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
+				String line = br.readLine();
+				while(line != null)
+				{
+					List<String> credentials = Arrays.asList(line.split(","));
+					users.add(new User(credentials.get(0), credentials.get(1)));
+				}
 			
 		    }
 		
-		 catch (FileNotFoundException e) {
+		catch (FileNotFoundException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -40,6 +42,5 @@ public class FileReader implements IFileReader{
 		    
 		    	
 		
-		}	
-
+	}	
 }

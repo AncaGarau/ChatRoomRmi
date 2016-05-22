@@ -1,21 +1,17 @@
 package Chat.Rmi.Server;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
-import Chat.Rmi.Helpers.FileReader;
-import Chat.Rmi.Helpers.FileWriter;
+public class Launcher 
+{
 
-public class Launcher {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		FileWriter fw=new FileWriter();
-		fw.createFileIfNotExist();
-		//fw.writeCredentials("andreea", "123dsd12");
-		//fw.writeCredentials("alex", "parola");
-		//fw.writeCredentials("ana", "paroladdd");
-		FileReader fr=new FileReader();
-		fr.ReadCredentials("Credentials.txt");
-	
+	public static void main(String[] args) throws RemoteException, MalformedURLException 
+	{
+		LocateRegistry.createRegistry(1234);
+		Naming.rebind("//localhost:1234/AaaChatServer", new Server());
+		System.out.println("Server is up and running...");
 	}
-
 }

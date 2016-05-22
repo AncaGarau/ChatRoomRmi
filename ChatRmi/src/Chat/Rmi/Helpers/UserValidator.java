@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import Chat.Rmi.Models.User;
 
-public class UserValidator {
+public class UserValidator 
+{
 	
-	public boolean usernameIsUnique(String username, ArrayList<User> users)
+	public boolean UsernameIsUnique(String username, ArrayList<User> users)
 	{
 		for(User user : users)
 			if(username == user.getUsername())

@@ -1,6 +1,7 @@
 package Chat.Rmi.Helpers;
 
-public interface IFileWriter {
-	public void createFileIfNotExist();
-	public void writeCredentials(String username,String password);
+public interface IFileWriter 
+{
+	public void CreateFileIfNotExist();
+	public void WriteCredentials(String username,String password);
 }
