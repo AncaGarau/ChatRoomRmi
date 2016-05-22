@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 import Chat.Rmi.Helpers.FileReader;
+import Chat.Rmi.Helpers.UserValidator;
 import Chat.Rmi.Models.ServerAddress;
 import Chat.Rmi.Models.User;
 import Chat.Rmi.Server.IServer;
@@ -15,14 +16,20 @@ public class ClientLauncher
 {
 	public static void main(String[] args) throws Exception 
 	{
-		
-		User user = GetClientCredentials();		
+			
 		
 		try
 		{
 			IServer server = GetServer();
-
-			//TODO: Validate client credentials
+			User user = GetClientCredentials();	
+			/*String errors = server.FindCredentialsErrors(user);
+			
+			while(errors != "")
+			{
+				System.out.println(errors);
+				user = GetClientCredentials();	
+				errors = server.FindCredentialsErrors(user);
+			}*/
 			
 			new Thread(new Client(user, server)).start();		
 		}

@@ -1,21 +1,35 @@
 package Chat.Rmi.Server;
 
+import java.awt.List;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import Chat.Rmi.Client.IClient;
+import Chat.Rmi.Helpers.FileReader;
+import Chat.Rmi.Helpers.IFileReader;
+import Chat.Rmi.Helpers.IUserValidator;
+import Chat.Rmi.Helpers.UserValidator;
+import Chat.Rmi.Models.InvalidPasswordException;
+import Chat.Rmi.Models.InvalidUserNameException;
+import Chat.Rmi.Models.User;
+import Chat.Rmi.Models.UserNameOrPasswordInvalidException;
 
 public class Server extends UnicastRemoteObject implements IServer 
 {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<IClient> clients;
+	private UserValidator userValidator;
+	private ArrayList<User> users;
 		
 
-	protected Server() throws RemoteException 
+	protected Server(UserValidator userValidator, FileReader fileReader) throws RemoteException 
 	{
-		clients = new ArrayList<IClient>();
+		this.clients = new ArrayList<IClient>();
+		this.userValidator = userValidator;
+		this.users = (ArrayList<User>) fileReader.ReadExistingCredentials("C:\\Chat\\Users.txt");
+		
 	}
 
 	@Override
@@ -38,6 +52,9 @@ public class Server extends UnicastRemoteObject implements IServer
 	@Override
 	public void LogInChatClient(IClient clientToLogIn) throws RemoteException 
 	{
+		//if(!userValidator.UserExists(clientToLogIn.GetUser(), users))
+			//throw new UserNameOrPasswordInvalidException();
+		
 		this.clients.add(clientToLogIn);
 		/*try
 		{
@@ -53,6 +70,9 @@ public class Server extends UnicastRemoteObject implements IServer
 	@Override
 	public void BroadcastMessage(String messageToBroadcast) throws RemoteException 
 	{		
+		if(messageToBroadcast.contains("-dance"))
+			messageToBroadcast = messageToBroadcast.replace("-dance", "\n\\('o')\n  ) )Z\n  /\\");
+					
 		for(int i = 0; i < this.clients.size(); i++)
 		{
 			try
@@ -72,5 +92,22 @@ public class Server extends UnicastRemoteObject implements IServer
 	{
 		//System.out.println("Logged out chat client!");
 		this.clients.remove(clientToLogOut);
+	}
+	
+	public String FindCredentialsErrors(User user) throws RemoteException
+	{
+		String errors = "";
+		
+		if(!userValidator.IsValidCredential(user.getUsername()))
+			errors += "Invalid user name!\n";
+		
+		if(!userValidator.IsValidCredential(user.getPassword()))
+			errors += "Invalid password!\n";
+		
+		if(!userValidator.UsernameIsUnique(user.getUsername(), users))
+			errors += "User name already exists!\n";
+		
+		return errors;
+			
 	}
 }
