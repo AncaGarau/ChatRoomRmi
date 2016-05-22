@@ -26,4 +26,9 @@ public class UserValidator
 		
 		return false;
 	}
+	
+	public boolean UserExists(User user, ArrayList<User> users)
+	{
+		return users.contains(user);
+	}
 }

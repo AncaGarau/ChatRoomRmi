@@ -10,17 +10,19 @@ public class FileWriter implements IFileWriter
 	File file = new File("Credentials.txt");
 	
 	@Override
-	public void CreateFileIfNotExist() 
+	public void CreateFileIfNotExists() 
 	{
-		if(!file.exists())
-			try 
-			{
-				file.createNewFile();
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
+		if(file.exists())
+			return;
+		
+		try 
+		{
+			file.createNewFile();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -39,14 +41,11 @@ public class FileWriter implements IFileWriter
 		} 
 		catch (FileNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 }

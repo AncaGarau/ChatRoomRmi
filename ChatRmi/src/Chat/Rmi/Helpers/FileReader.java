@@ -11,36 +11,47 @@ import Chat.Rmi.Models.User;
 
 public class FileReader implements IFileReader
 {
-
 	@Override
-	public List<User> ReadCredentials(String fileName) 
+	public List<User> ReadExistingCredentials(String fileName) 
 	{
 		List<User> users = new ArrayList<User>();
-		try {
-				@SuppressWarnings("resource")
-				BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
-				String line = br.readLine();
-				while(line != null)
-				{
-					List<String> credentials = Arrays.asList(line.split(","));
-					users.add(new User(credentials.get(0), credentials.get(1)));
-				}
-			
-		    }
-		
+		try 
+		{
+			BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
+			String line = br.readLine();
+			while(line != null)
+			{
+				List<String> credentials = Arrays.asList(line.split(","));
+				users.add(new User(credentials.get(0), credentials.get(1)));
+			}
+		}
 		catch (FileNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return users;
-		    
-		    	
-		
-	}	
+	}
+	
+	public String ReadServerAddress(String fileName)
+	{
+		String address = null;
+		try 
+		{
+			BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
+			address = br.readLine();
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		return address;
+	}
 }

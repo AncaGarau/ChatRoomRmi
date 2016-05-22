@@ -9,4 +9,5 @@ public interface IUserValidator
 {
 	boolean IsUsernameUnique(String username, List<User> users);
 	boolean IsValidCredential(String credential);
+	boolean UserExists(User user, ArrayList<User> users);
 }
