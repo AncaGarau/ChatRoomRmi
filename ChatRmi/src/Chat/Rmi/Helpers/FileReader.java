@@ -23,7 +23,7 @@ public class FileReader implements IFileReader
 			while(line != null)
 			{
 				List<String> credentials = Arrays.asList(line.split(","));
-				users.add(new User(credentials.get(0), credentials.get(1)));
+				users.add(new User(credentials.get(0), credentials.get(1), true));
 			}
 		}
 		catch (FileNotFoundException e) 

@@ -10,7 +10,7 @@ public class UserValidator
 	public boolean UsernameIsUnique(String username, ArrayList<User> users)
 	{
 		for(User user : users)
-			if(username == user.getUsername())
+			if(username.equals(user.getUsername()))
 				return false;
 		return true;
 	}

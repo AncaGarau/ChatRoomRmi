@@ -1,19 +1,13 @@
 package Chat.Rmi.Server;
 
-import java.awt.List;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import Chat.Rmi.Client.IClient;
 import Chat.Rmi.Helpers.FileReader;
-import Chat.Rmi.Helpers.IFileReader;
-import Chat.Rmi.Helpers.IUserValidator;
 import Chat.Rmi.Helpers.UserValidator;
-import Chat.Rmi.Models.InvalidPasswordException;
-import Chat.Rmi.Models.InvalidUserNameException;
 import Chat.Rmi.Models.User;
-import Chat.Rmi.Models.UserNameOrPasswordInvalidException;
 
 public class Server extends UnicastRemoteObject implements IServer 
 {
@@ -36,35 +30,19 @@ public class Server extends UnicastRemoteObject implements IServer
 	public void RegisterChatClient(IClient clientToRegister) throws RemoteException 
 	{
 		this.clients.add(clientToRegister);
+		clientToRegister.GetUser().setToRegistered();
+		this.users.add(clientToRegister.GetUser());
 		
-		/*try
-		{
-			String msg = clientToRegister.GetUser().getUsername() + " has signed in!";
-			this.BroadcastMessage(msg);
-		}
-		catch(RemoteException ex)
-		{
-			ex.printStackTrace();
-		}*/
-
+		String msg = clientToRegister.GetUser().getUsername() + " has signed in!";
+		this.BroadcastMessage(msg);
 	}
 
 	@Override
 	public void LogInChatClient(IClient clientToLogIn) throws RemoteException 
 	{
-		//if(!userValidator.UserExists(clientToLogIn.GetUser(), users))
-			//throw new UserNameOrPasswordInvalidException();
-		
 		this.clients.add(clientToLogIn);
-		/*try
-		{
-			String msg = clientToLogIn.GetUser().getUsername() + " has signed in!";
-			this.BroadcastMessage(msg);
-		}
-		catch(RemoteException ex)
-		{
-			ex.printStackTrace();
-		}*/
+		String msg = clientToLogIn.GetUser().getUsername() + " has signed in!";
+		this.BroadcastMessage(msg);
 	}
 
 	@Override
@@ -82,6 +60,8 @@ public class Server extends UnicastRemoteObject implements IServer
 			catch(Exception ex)
 			{
 				this.LogOutChatClient(this.clients.get(i));
+				//String msg = this.clients.get(i).GetUser().getUsername() + " has signed out!";
+				//this.BroadcastMessage(msg);
 			}
 		}
 				
@@ -90,7 +70,6 @@ public class Server extends UnicastRemoteObject implements IServer
 	@Override
 	public void LogOutChatClient(IClient clientToLogOut) throws RemoteException
 	{
-		//System.out.println("Logged out chat client!");
 		this.clients.remove(clientToLogOut);
 	}
 	
@@ -98,16 +77,23 @@ public class Server extends UnicastRemoteObject implements IServer
 	{
 		String errors = "";
 		
-		if(!userValidator.IsValidCredential(user.getUsername()))
-			errors += "Invalid user name!\n";
-		
-		if(!userValidator.IsValidCredential(user.getPassword()))
-			errors += "Invalid password!\n";
-		
-		if(!userValidator.UsernameIsUnique(user.getUsername(), users))
-			errors += "User name already exists!\n";
+		if(user.isRegistered())
+		{
+			if(!userValidator.UserExists(user, users))
+				return "Invalid credentials!\n";
+		}
+		else
+		{
+				if(!userValidator.IsValidCredential(user.getUsername()))
+					errors = errors + "Invalid user name!\n";
+				
+				if(!userValidator.IsValidCredential(user.getPassword()))
+					errors = errors + "Invalid password!\n";
+				
+				if(!userValidator.UsernameIsUnique(user.getUsername(), users))
+					errors = errors + "User name already exists!\n";
+		}
 		
 		return errors;
-			
 	}
 }

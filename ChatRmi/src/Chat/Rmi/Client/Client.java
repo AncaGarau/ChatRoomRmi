@@ -20,7 +20,10 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 		this.user = user;
 		this.server = server;
 		
-		server.RegisterChatClient(this);
+		if(user.isRegistered())
+			server.LogInChatClient(this);
+		else
+			server.RegisterChatClient(this);
 	}
 	
 	@Override
@@ -56,8 +59,6 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 				System.out.println("Crashed in client");
 				ex.printStackTrace();
 			}
-
 		}
-		
 	}
 }

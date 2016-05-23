@@ -16,20 +16,18 @@ public class ClientLauncher
 {
 	public static void main(String[] args) throws Exception 
 	{
-			
-		
 		try
 		{
 			IServer server = GetServer();
 			User user = GetClientCredentials();	
-			/*String errors = server.FindCredentialsErrors(user);
+			String errors = server.FindCredentialsErrors(user);
 			
-			while(errors != "")
+			while(!errors.equals(""))
 			{
 				System.out.println(errors);
 				user = GetClientCredentials();	
 				errors = server.FindCredentialsErrors(user);
-			}*/
+			}
 			
 			new Thread(new Client(user, server)).start();		
 		}
@@ -85,7 +83,7 @@ public class ClientLauncher
 		System.out.println("Enter password:");
 		String password = scanner.nextLine();
 				
-		return new User(username, password);
+		return new User(username, password, true);
 	}
 	
 	private static User GetRegistrationCredentials()
@@ -98,7 +96,7 @@ public class ClientLauncher
 		System.out.println("Enter new password:");
 		String password = scanner.nextLine();
 		
-		return new User(username, password);
+		return new User(username, password, false);
 	}
 
 }
