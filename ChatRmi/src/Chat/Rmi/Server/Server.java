@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import Chat.Rmi.Client.IClient;
 import Chat.Rmi.Helpers.FileReader;
+import Chat.Rmi.Helpers.FileWriter;
 import Chat.Rmi.Helpers.UserValidator;
 import Chat.Rmi.Models.User;
 
@@ -16,13 +17,15 @@ public class Server extends UnicastRemoteObject implements IServer
 	private ArrayList<IClient> clients;
 	private UserValidator userValidator;
 	private ArrayList<User> users;
+	private FileWriter fileWriter;
 		
 
-	protected Server(UserValidator userValidator, FileReader fileReader) throws RemoteException 
+	protected Server(UserValidator userValidator, FileReader fileReader, FileWriter fileWriter) throws RemoteException 
 	{
 		this.clients = new ArrayList<IClient>();
 		this.userValidator = userValidator;
 		this.users = (ArrayList<User>) fileReader.ReadExistingCredentials("C:\\Chat\\Users.txt");
+		this.fileWriter = fileWriter;
 		
 	}
 
@@ -32,6 +35,8 @@ public class Server extends UnicastRemoteObject implements IServer
 		this.clients.add(clientToRegister);
 		clientToRegister.GetUser().setToRegistered();
 		this.users.add(clientToRegister.GetUser());
+		this.saveUser(clientToRegister.GetUser());
+		
 		
 		String msg = clientToRegister.GetUser().getUsername() + " has signed in!";
 		this.BroadcastMessage(msg);
@@ -48,8 +53,7 @@ public class Server extends UnicastRemoteObject implements IServer
 	@Override
 	public void BroadcastMessage(String messageToBroadcast) throws RemoteException 
 	{		
-		if(messageToBroadcast.contains("-dance"))
-			messageToBroadcast = messageToBroadcast.replace("-dance", "\n\\('o')\n  ) )Z\n  /\\");
+		messageToBroadcast=formatEmoticons(messageToBroadcast);
 					
 		for(int i = 0; i < this.clients.size(); i++)
 		{
@@ -67,6 +71,15 @@ public class Server extends UnicastRemoteObject implements IServer
 				
 	}
 	
+	public String formatEmoticons(String messageToBroadcast) throws RemoteException
+	{
+		if(messageToBroadcast.contains("-dance"))
+			messageToBroadcast = messageToBroadcast.replace("-dance", "\n\\('o')\n  ) )Z\n  /\\");
+		if(messageToBroadcast.contains("-cat"))
+			messageToBroadcast = messageToBroadcast.replace("-cat", "\n___,,,^._.^,,,___");
+		return messageToBroadcast;
+	}
+
 	@Override
 	public void LogOutChatClient(IClient clientToLogOut) throws RemoteException
 	{
@@ -95,5 +108,11 @@ public class Server extends UnicastRemoteObject implements IServer
 		}
 		
 		return errors;
+	}
+	
+	private void saveUser(User user)
+	{
+		this.fileWriter.CreateFileIfNotExists();
+		this.fileWriter.WriteCredentials(user.getUsername(), user.getPassword());
 	}
 }

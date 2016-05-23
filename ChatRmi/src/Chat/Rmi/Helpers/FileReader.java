@@ -24,6 +24,7 @@ public class FileReader implements IFileReader
 			{
 				List<String> credentials = Arrays.asList(line.split(","));
 				users.add(new User(credentials.get(0), credentials.get(1), true));
+				line = br.readLine();
 			}
 		}
 		catch (FileNotFoundException e) 

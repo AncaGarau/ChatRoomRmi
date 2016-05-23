@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class FileWriter implements IFileWriter
 {
-	File file = new File("Credentials.txt");
+	File file = new File("C:\\Chat\\Users.txt");
 	
 	@Override
 	public void CreateFileIfNotExists() 
