@@ -4,10 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-
 import Chat.Rmi.Helpers.FileReader;
 import Chat.Rmi.Helpers.FileWriter;
-import Chat.Rmi.Helpers.IUserValidator;
 import Chat.Rmi.Helpers.UserValidator;
 import Chat.Rmi.Models.ServerAddress;
 

@@ -5,9 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-
 import Chat.Rmi.Helpers.FileReader;
-import Chat.Rmi.Helpers.UserValidator;
 import Chat.Rmi.Models.ServerAddress;
 import Chat.Rmi.Models.User;
 import Chat.Rmi.Server.IServer;

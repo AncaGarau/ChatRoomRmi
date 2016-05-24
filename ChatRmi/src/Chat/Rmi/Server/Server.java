@@ -68,7 +68,6 @@ public class Server extends UnicastRemoteObject implements IServer
 				//this.BroadcastMessage(msg);
 			}
 		}
-				
 	}
 	
 	public String formatEmoticons(String messageToBroadcast) throws RemoteException
@@ -77,6 +76,8 @@ public class Server extends UnicastRemoteObject implements IServer
 			messageToBroadcast = messageToBroadcast.replace("-dance", "\n\\('o')\n  ) )Z\n  /\\");
 		if(messageToBroadcast.contains("-cat"))
 			messageToBroadcast = messageToBroadcast.replace("-cat", "\n___,,,^._.^,,,___");
+		if(messageToBroadcast.contains("-rock"))
+			messageToBroadcast = messageToBroadcast.replace("-rock", "\n\\m/(`o`)\\m/");
 		return messageToBroadcast;
 	}
 
