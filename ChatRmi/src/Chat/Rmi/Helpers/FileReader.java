@@ -26,6 +26,7 @@ public class FileReader implements IFileReader
 				users.add(new User(credentials.get(0), credentials.get(1), true));
 				line = br.readLine();
 			}
+			br.close();
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -46,7 +47,7 @@ public class FileReader implements IFileReader
 			BufferedReader br = new BufferedReader(new java.io.FileReader(fileName));
 			String line = br.readLine();
 			details = Arrays.asList(line.split(","));
-			
+			br.close();
 		}
 		catch (FileNotFoundException e) 
 		{

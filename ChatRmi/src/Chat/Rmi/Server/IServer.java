@@ -4,10 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import Chat.Rmi.Client.IClient;
-import Chat.Rmi.Models.InvalidPasswordException;
-import Chat.Rmi.Models.InvalidUserNameException;
 import Chat.Rmi.Models.User;
-import Chat.Rmi.Models.UserNameOrPasswordInvalidException;
 
 public interface IServer extends Remote
 {

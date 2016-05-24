@@ -1,10 +1,8 @@
 package Chat.Rmi.Client;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
-
 import Chat.Rmi.Models.User;
 import Chat.Rmi.Server.IServer;
 
