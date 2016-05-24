@@ -64,8 +64,6 @@ public class Server extends UnicastRemoteObject implements IServer
 			catch(Exception ex)
 			{
 				this.LogOutChatClient(this.clients.get(i));
-				//String msg = this.clients.get(i).GetUser().getUsername() + " has signed out!";
-				//this.BroadcastMessage(msg);
 			}
 		}
 	}
