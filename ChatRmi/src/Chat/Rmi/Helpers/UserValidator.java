@@ -2,6 +2,7 @@ package Chat.Rmi.Helpers;
 
 import java.util.ArrayList;
 
+import Chat.Rmi.Models.LocalizedStrings;
 import Chat.Rmi.Models.User;
 
 public class UserValidator 
@@ -17,11 +18,10 @@ public class UserValidator
 	
 	public boolean IsValidCredential(String credential)
 	{
-		
 		if(credential == null)
 			return false;
 		
-		if(credential.matches("^[a-zA-Z0-9]+$"))
+		if(credential.matches(LocalizedStrings.CredentialVaildationRegex))
 			return true;
 		
 		return false;

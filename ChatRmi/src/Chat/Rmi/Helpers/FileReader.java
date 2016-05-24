@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import Chat.Rmi.Models.ServerAddress;
+import Chat.Rmi.Models.ServerAddressFileException;
 import Chat.Rmi.Models.User;
 
-public class FileReader implements IFileReader
+public class FileReader
 {
-	@Override
 	public List<User> ReadExistingCredentials(String fileName) 
 	{
 		List<User> users = new ArrayList<User>();
@@ -39,7 +39,7 @@ public class FileReader implements IFileReader
 		return users;
 	}
 	
-	public ServerAddress ReadServerAddress(String fileName)
+	public ServerAddress ReadServerAddress(String fileName) throws ServerAddressFileException
 	{
 		List<String> details = null;
 		try 
@@ -51,11 +51,11 @@ public class FileReader implements IFileReader
 		}
 		catch (FileNotFoundException e) 
 		{
-			e.printStackTrace();
+			throw new ServerAddressFileException();
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			throw new ServerAddressFileException();
 		}
 		return new ServerAddress(details.get(0), Integer.parseInt(details.get(1)), details.get(2));
 	}

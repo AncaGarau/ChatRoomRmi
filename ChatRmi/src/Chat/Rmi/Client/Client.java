@@ -3,6 +3,8 @@ package Chat.Rmi.Client;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
+
+import Chat.Rmi.Models.LocalizedStrings;
 import Chat.Rmi.Models.User;
 import Chat.Rmi.Server.IServer;
 
@@ -39,11 +41,10 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 	@Override
 	public void run() 
 	{
-		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		String message;
 		
-		System.out.println("\n\nWelcome to the chat!\n\n");
+		System.out.println(LocalizedStrings.WelcomeToChat);
 		
 		while(true)
 		{
@@ -54,8 +55,7 @@ public class Client extends UnicastRemoteObject implements IClient, Runnable
 			}
 			catch(RemoteException ex)
 			{
-				System.out.println("Crashed in client");
-				ex.printStackTrace();
+				System.out.println(LocalizedStrings.ProblemCommunicating);
 			}
 		}
 	}

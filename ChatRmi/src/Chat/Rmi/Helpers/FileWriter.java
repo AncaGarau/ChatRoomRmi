@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import Chat.Rmi.Models.LocalizedStrings;
+import Chat.Rmi.Models.UsersFileException;
 
-public class FileWriter implements IFileWriter
+
+public class FileWriter
 {
-	File file = new File("C:\\Chat\\Users.txt");
+	File file = new File(LocalizedStrings.UsersFile);
 	
-	@Override
 	public void CreateFileIfNotExists() 
 	{
 		if(file.exists())
@@ -25,8 +27,7 @@ public class FileWriter implements IFileWriter
 		}
 	}
 
-	@Override
-	public void WriteCredentials(String username,String password) 
+	public void WriteCredentials(String username,String password) throws UsersFileException 
 	{
 		String credentials=username+","+password;
 		
@@ -37,15 +38,15 @@ public class FileWriter implements IFileWriter
 			fw.append(System.getProperty("line.separator"));
 			fw.close();
 			
-			System.out.println("Username saved");
+			System.out.println(LocalizedStrings.UserSaved);
 		} 
 		catch (FileNotFoundException e) 
 		{
-			e.printStackTrace();
+			throw new UsersFileException();
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			throw new UsersFileException();
 		}
 	}
 }

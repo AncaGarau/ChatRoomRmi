@@ -8,7 +8,9 @@ import Chat.Rmi.Client.IClient;
 import Chat.Rmi.Helpers.FileReader;
 import Chat.Rmi.Helpers.FileWriter;
 import Chat.Rmi.Helpers.UserValidator;
+import Chat.Rmi.Models.LocalizedStrings;
 import Chat.Rmi.Models.User;
+import Chat.Rmi.Models.UsersFileException;
 
 public class Server extends UnicastRemoteObject implements IServer 
 {
@@ -24,9 +26,8 @@ public class Server extends UnicastRemoteObject implements IServer
 	{
 		this.clients = new ArrayList<IClient>();
 		this.userValidator = userValidator;
-		this.users = (ArrayList<User>) fileReader.ReadExistingCredentials("C:\\Chat\\Users.txt");
+		this.users = (ArrayList<User>) fileReader.ReadExistingCredentials(LocalizedStrings.UsersFile);
 		this.fileWriter = fileWriter;
-		
 	}
 
 	@Override
@@ -37,8 +38,7 @@ public class Server extends UnicastRemoteObject implements IServer
 		this.users.add(clientToRegister.GetUser());
 		this.saveUser(clientToRegister.GetUser());
 		
-		
-		String msg = clientToRegister.GetUser().getUsername() + " has signed in!";
+		String msg = clientToRegister.GetUser().getUsername() + LocalizedStrings.HasSignedIn;
 		this.BroadcastMessage(msg);
 	}
 
@@ -46,14 +46,14 @@ public class Server extends UnicastRemoteObject implements IServer
 	public void LogInChatClient(IClient clientToLogIn) throws RemoteException 
 	{
 		this.clients.add(clientToLogIn);
-		String msg = clientToLogIn.GetUser().getUsername() + " has signed in!";
+		String msg = clientToLogIn.GetUser().getUsername() + LocalizedStrings.HasSignedIn;
 		this.BroadcastMessage(msg);
 	}
 
 	@Override
 	public void BroadcastMessage(String messageToBroadcast) throws RemoteException 
 	{		
-		messageToBroadcast=formatEmoticons(messageToBroadcast);
+		messageToBroadcast = FormatEmoticons(messageToBroadcast);
 					
 		for(int i = 0; i < this.clients.size(); i++)
 		{
@@ -69,17 +69,7 @@ public class Server extends UnicastRemoteObject implements IServer
 			}
 		}
 	}
-	
-	public String formatEmoticons(String messageToBroadcast) throws RemoteException
-	{
-		if(messageToBroadcast.contains("-dance"))
-			messageToBroadcast = messageToBroadcast.replace("-dance", "\n\\('o')\n  ) )Z\n  /\\");
-		if(messageToBroadcast.contains("-cat"))
-			messageToBroadcast = messageToBroadcast.replace("-cat", "\n___,,,^._.^,,,___");
-		if(messageToBroadcast.contains("-rock"))
-			messageToBroadcast = messageToBroadcast.replace("-rock", "\n\\m/(`o`)\\m/");
-		return messageToBroadcast;
-	}
+
 
 	@Override
 	public void LogOutChatClient(IClient clientToLogOut) throws RemoteException
@@ -94,18 +84,18 @@ public class Server extends UnicastRemoteObject implements IServer
 		if(user.isRegistered())
 		{
 			if(!userValidator.UserExists(user, users))
-				return "Invalid credentials!\n";
+				return LocalizedStrings.InvalidCredentials;
 		}
 		else
 		{
 				if(!userValidator.IsValidCredential(user.getUsername()))
-					errors = errors + "Invalid user name!\n";
+					errors = errors + LocalizedStrings.InvalidUserName;
 				
 				if(!userValidator.IsValidCredential(user.getPassword()))
-					errors = errors + "Invalid password!\n";
+					errors = errors + LocalizedStrings.InvalidPassword;
 				
 				if(!userValidator.UsernameIsUnique(user.getUsername(), users))
-					errors = errors + "User name already exists!\n";
+					errors = errors + LocalizedStrings.UserAlreadyExists;
 		}
 		
 		return errors;
@@ -114,6 +104,24 @@ public class Server extends UnicastRemoteObject implements IServer
 	private void saveUser(User user)
 	{
 		this.fileWriter.CreateFileIfNotExists();
-		this.fileWriter.WriteCredentials(user.getUsername(), user.getPassword());
+		try 
+		{
+			this.fileWriter.WriteCredentials(user.getUsername(), user.getPassword());
+		} catch (UsersFileException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private String FormatEmoticons(String messageToBroadcast) throws RemoteException
+	{
+		if(messageToBroadcast.contains(LocalizedStrings.DanceShortcut))
+			messageToBroadcast = messageToBroadcast.replace(LocalizedStrings.DanceShortcut, LocalizedStrings.DanceEmoticon);
+		if(messageToBroadcast.contains(LocalizedStrings.CatShortcut))
+			messageToBroadcast = messageToBroadcast.replace(LocalizedStrings.CatShortcut, LocalizedStrings.CatEmoticon);
+		if(messageToBroadcast.contains(LocalizedStrings.RockShortcut))
+			messageToBroadcast = messageToBroadcast.replace(LocalizedStrings.RockShortcut, LocalizedStrings.RockEmoticon);
+		return messageToBroadcast;
 	}
 }
